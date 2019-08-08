@@ -1,0 +1,73 @@
+﻿@model FridgeFood
+@{
+	ViewBag.Title = "Edit FridgeFood " + Model.Name;	
+}
+<form enctype="multipart/form-data" asp-controller="home" asp-action="Edit" method="post" class="mt-3">
+	<input hidden asp-for="ID" />
+	<div class="form-group row">
+		<label asp-for="Name" class="col-sm-2 col-form-label"></label>
+		<div class="col-sm-10">
+			<input asp-for="Name" class="form-control" placeholder="Name" />
+			<span asp-validation-for="Name" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label asp-for="BestBefore" class="col-sm-2 col-form-label"></label>
+		<div class="col-sm-10">
+			<input asp-for="BestBefore" class="form-control" placeholder="Best Before" />
+			<span asp-validation-for="BestBefore" class="text-danger"></span>
+		</div>
+	</div>
+
+	<div class="form-group row">
+		<label asp-for="Category" class="col-sm-2 col-form-label"></label>
+		<div class="col-sm-10">
+			<select asp-for="Category" class="custom-select mr-sm-2"
+					asp-items="Html.GetEnumSelectList<Category>()">
+				<option value="">Please Select</option>
+			</select>
+			<span asp-validation-for="Category" class="text-danger"></span>
+		</div>
+	</div>
+
+	<div class="form-group row">
+		<label asp-for="Unit" class="col-sm-2 col-form-label"></label>
+		<div class="col-sm-10">
+			<input asp-for="Unit" class="form-control" placeholder="How much?" />
+			<span asp-validation-for="Unit" class="text-danger"></span>
+		</div>
+	</div>
+
+
+	<div class="form-group row">
+		<label asp-for="Measurement" class="col-sm-2 col-form-label"></label>
+		<div class="col-sm-10">
+			<select asp-for="Measurement" class="custom-select mr-sm-2"
+					asp-items="Html.GetEnumSelectList<MeasType>()">
+				<option value="">Select measurement type</option>
+			</select>
+			<span asp-validation-for="Measurement" class="text-danger"></span>
+		</div>
+	</div>
+
+	<div class=text-danger asp-validation-summary="All"> </div>
+
+
+	<div class="form-group row">
+		<div class="col-sm-10">
+			<button type="submit" class="btn btn-primary">Update</button>
+			<a asp-controller="home" asp-action="index" class="btn btn-primary">Cancel</a>
+		</div>
+	</div>
+
+	@section Scripts{
+		<script>
+			$(document).ready(function () {
+				$('.custom-file-input').on("change", function () {
+					var fileName = $(this).val().split("\\").pop();
+					$(this).next('.custom-file-label').html(fileName);
+				});
+			});
+		</script>
+	}
+</form>

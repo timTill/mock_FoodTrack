@@ -1,0 +1,75 @@
+﻿@model IndexViewModel
+
+@{
+	ViewBag.Title = "FridgeFood List";
+}
+
+<div class="row foodtag col-sm-12" style="margin-top:10px;">
+	@foreach (var categ in Model.Categories)
+	{
+		<div id="@((int)categ)" class=" col-sm-4	categoryTag" style=" min-width: 18rem; margin-left :15px; max-width : 30.5%">
+			<a asp-controller="home" asp-action="index"
+			   asp-route-id="@((int)categ)">
+				@categ
+				<span class="badge float-lg-right quantities">@Model.CountByCateg[(int)categ]</span>
+			</a>
+		</div>
+	}
+</div>
+
+<div class="card-deck" style="margin:0-10px;">
+	@foreach (var ff in Model.fridgeFoodList)
+	{
+		<div class="card m-3 indexitem fooditem" style="min-width: 18rem; max-width:30.5%;">
+			<div class="card-header quantities">
+				<a asp-controller="home" asp-action="details"
+				   asp-route-id="@ff.ID" class="">
+					@ff.Name
+					<span class="float-lg-right">
+						Days to be used by:
+						<span class="quantities">
+							@((ff.BestBefore.Date - DateTime.Now.Date).Days)
+						</span>
+						@if (((ff.BestBefore.Date - DateTime.Now.Date).Days) <= 1)
+						{
+							<label hidden class="alerit">@ff.Name</label>
+						}
+					</span>
+				</a>
+			</div>
+		</div>
+	}
+
+	@section Scripts{
+		<script>
+			$(document).ready(function () {
+				if (@Model.tagNumber> -1) {
+					$("#@Model.tagNumber").addClass("bg-dark categoryTag");
+					//$("#@Model.tagNumber").css({});
+				}
+
+				$(".quantities").each(function () {
+					if ($(this).text() <= 0) {
+						$(this).addClass("btn-danger");
+						console.log(this);
+					}
+					else if ($(this).text() < 2) {
+						$(this).addClass("btn-warning");
+					}
+					else if ($(this).text() > 1) {
+						$(this).addClass("btn-success");
+					}
+				});
+
+			});
+
+			/* useful alert box, just bit annoying currently
+			 $(window).on("load", function (){
+				$(".alerit").each(function () {
+					alert('Check if ' + this.textContent + ' can still be consumed!');
+				});
+			});
+		*/
+		</script>
+	}
+</div>
